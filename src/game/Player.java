@@ -11,6 +11,8 @@ public class Player {
     private int playersAttack = 10;
     List<Items> inventory = new ArrayList<>();
 
+    private int x, y = 0;
+
     Scanner input = new Scanner(System.in);
 
     public Player(String playerName) {
@@ -23,7 +25,11 @@ public class Player {
     }
 
     public void move(HashMap<Integer, Rooms> createMap) {
-        System.out.println("You are staying on the  "+createMap.get(currentLocation).getRoomName()+".\n"+createMap.get(1).getDescription()+"\n\"~^~^~'====>`~^~^~^~^~~^~^~'====>`~^~^~^~^~~^~^~'====>`~^~^~^~^~~^~^~'====>`~^~^~^~^~~^~^~'====>");
+        System.out.println("You are staying on the  " + 
+                           createMap.get(currentLocation).getRoomName() + 
+                           ".\n"+createMap.get(1).getDescription() + 
+                           "\n\"~^~^~'====>`~^~^~^~^~~^~^~'====>`~^~^~^~^~~^~^~'====>`~^~^~^~^~~^~^~'====>`~^~^~^~^~~^~^~'====>");
+
         String roomName = createMap.get(currentLocation).getRoomName();
         String roomDescription = createMap.get(currentLocation).getDescription();
         String scanDirection;
@@ -64,13 +70,14 @@ public class Player {
 
     }
 
-    public void fight(Monsters monsters) {
-        System.out.println("55");
-        boolean loopIsRunning = true;
+    public boolean fight(Monsters monsters) {
+        //boolean loopIsRunning = true;
 
-        while (loopIsRunning) {
+        while (true) {
+            
             int playerDamage = new java.util.Random().nextInt(playersAttack);
             int monstersDamage = new java.util.Random().nextInt(monsters.getMonstersAttack());
+
             if (healthScore > 0 && monsters.getMonstersHealth() > 0) {
                 System.out.println("Yoy ecouter monster. Its attack  you and take " + monstersDamage + " your health score eual now " + (healthScore - monstersDamage));
                 healthScore = healthScore - monstersDamage;
@@ -80,14 +87,13 @@ public class Player {
                 System.out.println(healthScore);
             } else if (healthScore <= 0) {
                 System.out.println("You dead");
-
-                loopIsRunning = false;
+                return false;
+                //loopIsRunning = false;
             } else if (monsters.getMonstersHealth() < 1) {
                 System.out.println("monster dead");
-                loopIsRunning = false;
+                // loopIsRunning = false;
+                return true;
             }
-
-
         }
 
     }
@@ -139,9 +145,33 @@ public class Player {
         this.healthScore = healthScore;
     }
 
+    public int getAttack() {
+        return this.playersAttack;
+    }
+
+    public void setAttack(int newAttack) {
+        this.playersAttack = newAttack;
+    }
+
     public int getCurrentLocation() {
         return currentLocation;
     }
 
+    public int getX() {
+        return this.x;
+    }
 
+    public int getY() {
+        return this.y;
+    }
+
+    public void updatedPosition(Integer x, Integer y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void givePotion() {
+        System.out.println("\t\t You found a potion 🧪 !!!\n\t\t You was fully healed");
+        this.healthScore = 100;
+    }
 }
